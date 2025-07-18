@@ -149,17 +149,35 @@ pytest tests/test_auth.py
 
 ### Database Migrations
 
-This template uses SQLAlchemy with auto-table creation. For production, consider using Alembic:
+This template comes with Alembic pre-configured for database migrations. An example model (`ExampleItem`) and its migration are included to demonstrate the workflow.
 
 ```bash
-# Initialize Alembic (if not already done)
-alembic init alembic
+# Apply existing migrations (includes example table)
+cd app && alembic upgrade head
 
-# Create migration
-alembic revision --autogenerate -m "Add new table"
+# Create new migration after adding/modifying models
+cd app && alembic revision --autogenerate -m "Add new table"
 
-# Apply migration
-alembic upgrade head
+# Apply new migrations
+cd app && alembic upgrade head
+
+# View migration history
+cd app && alembic history
+
+# Rollback to previous migration
+cd app && alembic downgrade -1
+```
+
+**Remove the example model when starting your project:**
+```bash
+# Delete the example model file
+rm app/models/example_item.py
+
+# Create migration to remove the table
+cd app && alembic revision --autogenerate -m "Remove example table"
+
+# Apply the migration
+cd app && alembic upgrade head
 ```
 
 ## Deployment
